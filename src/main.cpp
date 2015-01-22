@@ -53,7 +53,8 @@ int main() {
     cl->AddGraphMatrixLoader(graph_loader);
 
     // provide the vectors file (in libsvm format) to be clustered
-    //std::vector<int> cls_feat = cl->ClusterFeatures("../data/features_libsvm");
+    // std::vector<int> cls_feat =
+    //        cl->ClusterFeatures("../data/features_libsvm");
 
 
     // in the case of an undirected and no weighted graph

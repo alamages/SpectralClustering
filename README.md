@@ -2,7 +2,7 @@
 
 This code implements Spectral Clustering, more or less, as described [here](http://www.informatik.uni-hamburg.de/ML/contents/people/luxburg/publications/Luxburg07_tutorial.pdf). The code uses  [shogun](https://github.com/shogun-toolbox/shogun) machine learning library for matrixes manipulation and kmeans.
 
-There is no warranty that the code is error free and valid. Purpose of the code is to provide a simple implementation of the algorithm. 
+There is no warranty that the code is error/bug free and valid. Purpose of the code is to provide a simple implementation of the algorithm. 
 
 Dependencies
 --------------------
@@ -36,7 +36,7 @@ You can check the `main.cpp` for a simple example of how to use the code.
 
 TODO
 ------
-
+ 
  * make more tests
  * probably add support for weighted/directed graph someday
  * add class to provide custom graph similarity matrix for graph files 

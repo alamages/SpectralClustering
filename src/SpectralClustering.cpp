@@ -66,12 +66,10 @@ void SpectralClustering::LoadUnnormalizedLaplacian(
 
     delete[] rows_sum;
 }
-
-shogun::SGMatrix<float64_t> SpectralClustering::GetStandardMatrix(
-        Graph &grapht) {
-    int nsize = grapht.GetSize();
+void SpectralClustering::GetStandardMatrix(
+        Graph &grapht,
+        shogun::SGMatrix<float64_t> &graph_matrix) {
     std::map<int, std::vector<int>> graphmap = grapht.GetGraph();
-    shogun::SGMatrix<float64_t> graph_matrix(nsize, nsize);
 
     int i_sum, j_sum, node_i;
     for (auto& iter : graphmap) {
@@ -85,8 +83,6 @@ shogun::SGMatrix<float64_t> SpectralClustering::GetStandardMatrix(
                         1.0/(sqrt(i_sum)*sqrt(j_sum)));
         }
     }
-
-    return graph_matrix;
 }
 
 
@@ -96,8 +92,9 @@ std::vector<int> SpectralClustering::ClusterGraph(std::string filename) {
     Graph graph;
     // load the graph file
     graph.Load(filename);
-
-    shogun::SGMatrix<float64_t> graph_matrix = GetStandardMatrix(graph);
+    int nsize = graph.GetSize();
+    shogun::SGMatrix<float64_t> graph_matrix(nsize, nsize);
+    GetStandardMatrix(graph, graph_matrix);
     shogun::CMulticlassLabels* result = ClusterGraphMatrix(graph_matrix);
 
     std::vector<int> clusters(result->get_num_labels());

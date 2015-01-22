@@ -20,11 +20,12 @@ class SpectralClustering {
     std::vector<int> ClusterGraph(std::string filename);
     std::vector<int> ClusterFeatures(std::string libsvmfile);
     shogun::CMulticlassLabels* ClusterGraphMatrix(
-            shogun::SGMatrix<float64_t>& graph_matrix);
+            shogun::SGMatrix<float64_t> &graph_matrix);
     void AddGraphMatrixLoader(GraphMatrixLoader* g_loader);
  private:
     GraphMatrixLoader* graph_loader;
-    shogun::SGMatrix<float64_t> GetStandardMatrix(Graph& grapht);
+    void GetStandardMatrix(Graph &grapht,
+                           shogun::SGMatrix<float64_t> &graph_matrix);
     void LoadFromSvmLibFormat(const char * file_name,
         shogun::SGMatrix<float64_t> &feats_matrix,
         int32_t &dim_feat, int32_t &num_samples);

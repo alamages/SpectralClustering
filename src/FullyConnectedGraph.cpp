@@ -1,22 +1,26 @@
+/* Copyright 2014: Emmanouil Kiagias <e.kiagias@gmail.com>
+ * License: GPLv3
+ */
 #include "FullyConnectedGraph.h"
-
 #include <iostream>
 
-void FullyConnectedGraph::AddSimilarityMatrixLoader(SimilarityMatrixLoader *sim){
+void FullyConnectedGraph::AddSimilarityMatrixLoader(
+        SimilarityMatrixLoader *sim) {
     sim_loader = sim;
 }
 
-FullyConnectedGraph::~FullyConnectedGraph(){
-    if(sim_loader){
+FullyConnectedGraph::~FullyConnectedGraph() {
+    if (sim_loader) {
         delete sim_loader;
     }
 }
 
-void FullyConnectedGraph::LoadGraphMatrix(shogun::SGMatrix<float64_t> &graph_matrix,
-                                          shogun::SGMatrix<float64_t> &feature_matrix){
-
-    if(!sim_loader){
-        std::cerr << "No similarity matrix loader was defined! Aborting..." << std::endl;
+void FullyConnectedGraph::LoadGraphMatrix(
+        shogun::SGMatrix<float64_t> &graph_matrix,
+        shogun::SGMatrix<float64_t> &feature_matrix) {
+    if (!sim_loader) {
+        std::cerr << "No similarity matrix loader was defined! Aborting..."
+                  << std::endl;
         std::exit(EXIT_FAILURE);
     }
 
@@ -29,13 +33,14 @@ void FullyConnectedGraph::LoadGraphMatrix(shogun::SGMatrix<float64_t> &graph_mat
     size_t num_rows = distance_matrix.num_rows;
     graph_matrix = shogun::SGMatrix<float64_t>(num_rows, num_rows);
 
-    for(size_t i = 0; i < num_rows; i++){
-        for(size_t j = 0; j < num_rows; j++){
-            float64_t value_temp = exp((-pow(distance_matrix(i,j), 2))/(2*pow(sigma, 2)));
+    for (size_t i = 0; i < num_rows; i++) {
+        for (size_t j = 0; j < num_rows; j++) {
+            float64_t value_temp =
+                    exp((-pow(distance_matrix(i, j), 2))/(2*pow(sigma, 2)));
             if (value_temp < 0)
                 continue;
 
-            graph_matrix(i,j) = value_temp;
+            graph_matrix(i, j) = value_temp;
         }
     }
 }

@@ -21,7 +21,9 @@ void PrintClusters(const std::vector<int> cls) {
 int main() {
     shogun::init_shogun_with_defaults();
 
-    std::string graphfile = "graph";
+    // assuming you build inside a build folder in the
+    // project's root directory
+    std::string graphfile = "../data/graph";
 
     // first initialize the similarity matrix class
     // only eucliadian similarity is implemented
@@ -51,13 +53,13 @@ int main() {
     cl->AddGraphMatrixLoader(graph_loader);
 
     // provide the vectors file (in libsvm format) to be clustered
-    //std::vector<int> cls_feat = cl->ClusterFeatures("features_libsvm");
+    //std::vector<int> cls_feat = cl->ClusterFeatures("../data/features_libsvm");
 
 
     // in the case of an undirected and no weighted graph
     // just call the ClusterGraph method (no need for similarity
     // and graph objects
-    std::vector<int> cls_gr = cl->ClusterGraph("graph");
+    std::vector<int> cls_gr = cl->ClusterGraph(graphfile);
     PrintClusters(cls_gr);
 
     shogun::exit_shogun();

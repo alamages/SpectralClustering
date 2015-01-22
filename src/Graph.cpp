@@ -13,7 +13,7 @@ void Graph::Load(std::string filename) {
     std::ifstream graphfile(filename, std::ifstream::in);
 
     if (!graphfile.good()) {
-        std::cerr << "No valid graph file was given"
+        std::cerr << "No valid (or no) graph file was given"
                   << std::endl;
         exit(EXIT_FAILURE);
     }

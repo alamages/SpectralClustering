@@ -16,7 +16,7 @@ class Graph {
     void PrintGraph();
     bool IsEmpty();
     int GetEdgesNum();
-    std::map<int, std::vector<int>>* GetGraph();
+    std::map<int, std::vector<int>> GetGraph();
  private:
     std::map<int, std::vector<int>> graph;
 };

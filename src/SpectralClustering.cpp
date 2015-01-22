@@ -70,7 +70,7 @@ void SpectralClustering::LoadUnnormalizedLaplacian(
 shogun::SGMatrix<float64_t> SpectralClustering::GetStandardMatrix(
         Graph &grapht) {
     int nsize = grapht.GetSize();
-    std::map<int, std::vector<int>>& graphmap = *(grapht.GetGraph());
+    std::map<int, std::vector<int>> graphmap = grapht.GetGraph();
     shogun::SGMatrix<float64_t> graph_matrix(nsize, nsize);
 
     int i_sum, j_sum, node_i;

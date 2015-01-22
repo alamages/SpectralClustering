@@ -37,7 +37,7 @@ int main() {
     SpectralClustering* cl = new SpectralClustering();
     cl->AddGraphMatrixLoader(graph_loader);
     //cl->ClusterFeatures(graphfile);
-    cl->ClusterGraph(graphfile);
+    std::vector<int> cls = cl->ClusterGraph(graphfile);
 
     shogun::exit_shogun();
 

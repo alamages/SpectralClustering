@@ -10,7 +10,13 @@
 #include <vector>
 
 void Graph::Load(std::string filename) {
-    std::ifstream graphfile(filename);
+    std::ifstream graphfile(filename, std::ifstream::in);
+
+    if (!graphfile.good()) {
+        std::cerr << "No valid graph file was given"
+                  << std::endl;
+        exit(EXIT_FAILURE);
+    }
 
     std::string line;
     while (std::getline(graphfile, line)) {
@@ -52,8 +58,8 @@ int Graph::GetSize() {
     return graph.size();
 }
 
-std::map<int, std::vector<int>>* Graph::GetGraph() {
-    return &graph;
+std::map<int, std::vector<int>> Graph::GetGraph() {
+    return graph;
 }
 
 int Graph::GetEdgesNum() {

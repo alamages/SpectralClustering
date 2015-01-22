@@ -9,6 +9,7 @@
 #include <shogun/lib/SGMatrix.h>
 #include <shogun/clustering/KMeans.h>
 #include <string>
+#include <vector>
 
 class SpectralClustering {
  public:
@@ -16,14 +17,12 @@ class SpectralClustering {
         graph_loader(g_loader) {}
     ~SpectralClustering();
     // load the graph file
-    void LoadGraphFile(std::string filename);
-    void GraphCluster();
-    void ClusterFeatures(std::string libsvmfile);
-    shogun::CMulticlassLabels* ClusterGraph(
+    std::vector<int> ClusterGraph(std::string filename);
+    std::vector<int> ClusterFeatures(std::string libsvmfile);
+    shogun::CMulticlassLabels* ClusterGraphMatrix(
             shogun::SGMatrix<float64_t>& graph_matrix);
     void AddGraphMatrixLoader(GraphMatrixLoader* g_loader);
  private:
-    Graph graph;
     GraphMatrixLoader* graph_loader;
     shogun::SGMatrix<float64_t> GetStandardMatrix(Graph& grapht);
     void LoadFromSvmLibFormat(const char * file_name,

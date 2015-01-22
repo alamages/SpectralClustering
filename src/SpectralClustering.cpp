@@ -23,15 +23,10 @@ void SpectralClustering::AddGraphMatrixLoader(GraphMatrixLoader *g_loader) {
     graph_loader = g_loader;
 }
 
-void SpectralClustering::LoadGraphFile(std::string filename) {
-    graph.Load(filename);
-}
-
 void SpectralClustering::LoadFromSvmLibFormat(const char * file_name,
         shogun::SGMatrix<float64_t> &feats_matrix,
         int32_t &dim_feat, int32_t &num_samples) {
     shogun::CLibSVMFile * file = new shogun::CLibSVMFile(file_name);
-    // ASSERT(file != NULL);
     SG_REF(file);
 
     shogun::SGSparseVector<float64_t> * feats;
@@ -96,19 +91,27 @@ shogun::SGMatrix<float64_t> SpectralClustering::GetStandardMatrix(
 
 
 // stand-alone version of Spectral Clustering
-void SpectralClustering::GraphCluster() {
-    shogun::SGMatrix<float64_t> graph_matrix = GetStandardMatrix(graph);
+std::vector<int> SpectralClustering::ClusterGraph(std::string filename) {
+    // initialize a graph object
+    Graph graph;
+    // load the graph file
+    graph.Load(filename);
 
-    shogun::CMulticlassLabels* result = ClusterGraph(graph_matrix);
-    for (int i=0; i < result->get_num_labels(); ++i)
-        std::cout << i+1 << "\t" << result->get_label(i) << std::endl;
+    shogun::SGMatrix<float64_t> graph_matrix = GetStandardMatrix(graph);
+    shogun::CMulticlassLabels* result = ClusterGraphMatrix(graph_matrix);
+
+    std::vector<int> clusters(result->get_num_labels());
+    for (size_t i = 0; i < clusters.size(); i++)
+        clusters[i] = result->get_label(i);
 
     // clean up
     SG_UNREF(result);
+
+    return clusters;
 }
 
 // dirty but simple and straight-forward. TODO refactor all the code
-void SpectralClustering::ClusterFeatures(std::string libsvmfile) {
+std::vector<int> SpectralClustering::ClusterFeatures(std::string libsvmfile) {
     if (!graph_loader) {
         std::cerr << "No graph loader was defined! Aborting..."
                   << std::endl;
@@ -129,18 +132,20 @@ void SpectralClustering::ClusterFeatures(std::string libsvmfile) {
     // then override graph_matrix with the unnormalized laplacian
     LoadUnnormalizedLaplacian(graph_matrix);
 
-    shogun::CMulticlassLabels* result = ClusterGraph(graph_matrix);
-    for (int i=0; i < result->get_num_labels(); ++i)
-        std::cout << i+1 << "\t" << result->get_label(i)
-                  << std::endl;
+    shogun::CMulticlassLabels* result = ClusterGraphMatrix(graph_matrix);
+    std::vector<int> clusters(result->get_num_labels());
+    for (size_t i = 0; i < clusters.size(); i++)
+        clusters[i] = result->get_label(i);
 
     // clean up
     SG_UNREF(result);
+
+    return clusters;
 }
 
 // ATTENTION SG_UNREF the return result object
 // clustering on the given graph_matrix
-shogun::CMulticlassLabels* SpectralClustering::ClusterGraph(
+shogun::CMulticlassLabels* SpectralClustering::ClusterGraphMatrix(
         shogun::SGMatrix<float64_t>& graph_matrix) {
     EigenSolver solver;
     shogun::SGMatrix<float64_t> k_eigenvectors =
@@ -165,7 +170,6 @@ shogun::CMulticlassLabels* SpectralClustering::ClusterGraph(
     shogun::CMulticlassLabels* result =
             shogun::CLabelsFactory::to_multiclass(clustering->apply());
 
-    // #TODO, clean up
     SG_UNREF(clustering);
     SG_UNREF(features);
 

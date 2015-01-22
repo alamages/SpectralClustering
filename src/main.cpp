@@ -12,33 +12,16 @@
 #include <iostream>
 #include <string>
 
-void Usage(char prog[]) {
-    std::cerr << "Usage: " << prog << " input_libsvm_file"
-              << std::endl
-              << " example: " << prog << " data"
-              << std::endl;
-}
-
-int main(int argc, char * argv[]) {
-    // simple argument parsing:
-    /*if (argc != 2){
-        Usage(argv[0]);
-
-        return 1;
-    }*/
-
-    std::string graphfile = "graph";  // static_cast<std::string>(argv[1]);
-
-    // parse the config file
+int main() {
     shogun::init_shogun_with_defaults();
 
+    std::string graphfile = "graph";
     // no need to delete that, graph matrix loader
     // will delete it once it owns this object
     EuclideanDistanceMatrix* euclidean_sim_matrix =
             new EuclideanDistanceMatrix();
 
     // Fully connected graph
-
     int sigma = 5;
     // no need to delete that, spectral clustering
     // will delete it once it owns this object
@@ -53,9 +36,9 @@ int main(int argc, char * argv[]) {
 
     SpectralClustering* cl = new SpectralClustering();
     cl->AddGraphMatrixLoader(graph_loader);
-    // cl->ClusterFeatures(graphfile);
-    cl->LoadGraphFile(graphfile);
-    cl->GraphCluster();
+    //cl->ClusterFeatures(graphfile);
+    cl->ClusterGraph(graphfile);
+
     shogun::exit_shogun();
 
     /* clean up */

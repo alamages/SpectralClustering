@@ -1,12 +1,15 @@
-#ifndef GRAPH_H
-#define GRAPH_H
+/* Copyright 2014: Emmanouil Kiagias <e.kiagias@gmail.com>
+ * License: GPLv3
+ */
+#ifndef SRC_GRAPH_H_
+#define SRC_GRAPH_H_
 
 #include <map>
 #include <string>
 #include <vector>
 
 class Graph {
-public:
+ public:
     // load the graphfile and initializes the graph map
     void Load(std::string filename);
     // returns an array with the core sequence
@@ -20,8 +23,8 @@ public:
     // #TODO is not needed to be removed
     const std::vector<int>* Neighbours(int node_id);
 
-private:
+ private:
     std::map<int, std::vector<int>> graph;
 };
 
-#endif // GRAPH_H
+#endif  // SRC_GRAPH_H_

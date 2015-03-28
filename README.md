@@ -28,7 +28,7 @@ The code supports feature vectors and undirected unweighted graph  clustering. I
 
 [node\_id] [neighbor\_id1] [neighbor\_id2] ....
 
-The node ids must in an increasing sequence starting from index 1 up to n (where n is the number of nodes). Same with the neighbor ids.
+The node ids must appear in an increasing sequence starting from index 1 up to n (where n is the number of nodes). Same with the neighbor ids.
 
 Examples of input files can be found in the data/ folder.
 
